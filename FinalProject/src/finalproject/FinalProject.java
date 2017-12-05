@@ -31,6 +31,7 @@ public class FinalProject extends Application {
         MySQLConnect con = new MySQLConnect();
         con.newRow(1);
         con.deleteFromTable(1);
+        //end test
         
         stage.setScene(scene);
         stage.show();
