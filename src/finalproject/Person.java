@@ -64,5 +64,6 @@ import javafx.beans.property.SimpleStringProperty;
         public void setMiles(String milesVar) {
             this.miles.set(milesVar);
         }
+        
     }//End of Final Person class
     
