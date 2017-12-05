@@ -155,6 +155,7 @@ public class MySQLConnect {
         Statement stmt = null;
         
         //test post please ignore
+        //will be adapted to use data from roland's stuff
         String statement1 = "INSERT INTO inventory(vin, make, model, year, miles) VALUES ('1', 'Ford', 'Bronco', '1984', '10000');";
         String statement2 = "SELECT * FROM inventory;";
         try {
