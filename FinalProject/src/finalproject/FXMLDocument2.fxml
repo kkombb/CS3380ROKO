@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="578.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="finalproject.FXMLDocument2Controller">
+   <children>
+      <TableView fx:id="table2" layoutX="13.0" layoutY="64.0" prefHeight="335.0" prefWidth="693.0" AnchorPane.bottomAnchor="179.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="64.0">
+        <columns>
+          <TableColumn fx:id="carClmn" prefWidth="124.0" text="Car" />
+          <TableColumn fx:id="modelClmn" prefWidth="132.0" text="Model" />
+            <TableColumn fx:id="priceClmn" prefWidth="147.0" text="Price" />
+            <TableColumn fx:id="customerClmn" minWidth="0.0" prefWidth="149.0" text="Customer" />
+            <TableColumn fx:id="dateClmn" prefWidth="142.0" text="Date" />
+        </columns>
+      </TableView>
+      <Text layoutX="48.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ROKO Cars Sold" textAlignment="CENTER" wrappingWidth="623.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <MenuButton layoutX="-1.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="87.0" text="Settings">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#goBackToCarDealership" text="Back" />
+          <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="About" />
+        </items>
+      </MenuButton>
+      <Button layoutX="501.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleTestButton" text="Button" />
+      <TextField fx:id="price" layoutX="210.0" layoutY="422.0" />
+      <TextField fx:id="customer" layoutX="210.0" layoutY="472.0" />
+      <Button layoutX="471.0" layoutY="436.0" mnemonicParsing="false" onAction="#sellBtnAction" prefHeight="50.0" prefWidth="120.0" text="Sell" />
+      <Label fx:id="priceLbl" layoutX="146.0" layoutY="427.0" text="Price" />
+      <Label fx:id="customerLbl" layoutX="145.0" layoutY="478.0" text="Customer" />
+      <Label fx:id="valid" alignment="CENTER" layoutX="162.0" layoutY="520.0" prefHeight="17.0" prefWidth="305.0" textFill="#3dc410">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="invalid" alignment="CENTER" layoutX="162.0" layoutY="537.0" prefHeight="17.0" prefWidth="305.0" textFill="#3dc410">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
+

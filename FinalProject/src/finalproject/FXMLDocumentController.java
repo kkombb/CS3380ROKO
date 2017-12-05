@@ -23,8 +23,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import java.sql.*;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 
 /**
@@ -32,6 +36,10 @@ import javafx.scene.input.KeyEvent;
  * @author rolandoruche
  */
 public class FXMLDocumentController implements Initializable {
+
+    
+    
+    
     
     @FXML
     private Label invalid; //label for wrong or insufficent inputs
@@ -40,16 +48,29 @@ public class FXMLDocumentController implements Initializable {
     private Label valid; //label for correct inputs
     
     @FXML
-    private TextField car; //label for car box
+    private Label carLbl; //label for model
     
     @FXML
-    private TextField model; //label for model box
+    private Label modelLbl; //label for model
     
     @FXML
-    private TextField year; //label for year box
+    private Label yearLbl; //label for year (=>converts to "priceLbl")
     
     @FXML
-    private TextField miles; //label for miles box
+    private Label milesLbl; //label for miles (=>converts to "customerLbl")
+    
+   
+    @FXML
+    private TextField car; //textfield for car box
+    
+    @FXML
+    private TextField model; //textfield for model box
+    
+    @FXML
+    private TextField year; //textfield for year box (=>converts to "price")
+    
+    @FXML
+    private TextField miles; //textfield for miles box (=>converts to "miles")
     
     @FXML
     private TableView<Person> table; 
@@ -67,6 +88,9 @@ public class FXMLDocumentController implements Initializable {
     private TableColumn milesClmn;
     
     @FXML
+    private Button insert;
+    
+    @FXML
     private Button delete;
     
     @FXML
@@ -74,6 +98,21 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private Button cancel;
+    
+    @FXML
+    private Button sell; //Button to sell car to customer
+    
+    
+    
+    //FOR SWITCHING SCENES
+    private Stage stage;
+    private Scene scene1; //car dealership scene
+    private Scene scene2; //car inventory scene
+    private FXMLDocument2Controller FXMLDocument2Controller; //doc2 controller
+    
+    
+    
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -83,8 +122,8 @@ public class FXMLDocumentController implements Initializable {
         final ObservableList<Person> data = FXCollections.observableArrayList(
             new Person("Porsche", "991 Turbo", "1996", "15000")
         );
-        
-        
+       
+       
         //Associating Data with columns
         carClmn.setCellValueFactory(new PropertyValueFactory<Person, String>("car"));
         modelClmn.setCellValueFactory(new PropertyValueFactory<Person, String>("model"));
@@ -99,7 +138,18 @@ public class FXMLDocumentController implements Initializable {
         update.setVisible(false);
         cancel.setVisible(false);
         
+        //Test
+        Singleton.getInstance().setCar(car);
+        Singleton.getInstance().setModel(model);
+        
+        
     }//End of initialize    
+    
+    public void start(Stage stage) {
+        this.stage = stage;
+        scene1 = stage.getScene();
+      
+    }
   
     
     @FXML
@@ -150,13 +200,14 @@ public class FXMLDocumentController implements Initializable {
                 cancel.setVisible(false);
         
                 //Set table row selection mode to null
-                table.getSelectionModel().select(null);  
+                table.getSelectionModel().select(null);
+                insert.setText("Insert"); //setting button back to Insert
             }//End of else       
         }//End of else
     }//End of updateBtn
     
     @FXML
-    private void insertBtn(ActionEvent event) {   
+    private void insertBtn(ActionEvent event) {  
         ObservableList<Person> data = table.getItems();
         
         invalid.setText(null);
@@ -172,12 +223,16 @@ public class FXMLDocumentController implements Initializable {
         }  else if ((miles.getText() == null || miles.getText().length() == 0)) {
                 invalid.setText("Invalid requirements.");
                 valid.setText(null);
+        } else if("Want to sell?".equals(insert.getText())) { //For selling purposes
+                sellBtnAppear(event);
+        } else if("Sell".equals(insert.getText())) {
+                    sellBtnAction(event);
         } else {
             data.add(new Person(
-                    car.getText(),
-                    model.getText(),
-                    year.getText(),
-                    miles.getText()));
+                car.getText(),
+                model.getText(),
+                year.getText(),
+                miles.getText()));
             car.clear();
             model.clear();
             year.clear();
@@ -186,6 +241,8 @@ public class FXMLDocumentController implements Initializable {
             //diplaying items on the table
             table.setItems(data);
            
+            
+            
             valid.setText("Queue inserted!");
             invalid.setText(null);
         }
@@ -205,9 +262,7 @@ public class FXMLDocumentController implements Initializable {
             table.getItems().remove(selectedIndex);
             valid.setText("Queue deleted!");
             
-            
             invalid.setText(null);
-        
         
             //disappear buttons after deleting
             delete.setVisible(false);
@@ -222,15 +277,51 @@ public class FXMLDocumentController implements Initializable {
         
             //Set table roll selection mode to null
             table.getSelectionModel().select(null);
+            insert.setText("Insert"); //setting button back to Insert
         } else {
             invalid.setText(null);
             valid.setText(null);
         }//End of else
     }//End of deleteBtn
     
+  
+    private void sellBtnAppear(ActionEvent event) {
+        insert.setText("Sell");
+        //Setting all button, labels and textfields to invisible
+        delete.setVisible(false);
+        update.setVisible(false);
+        cancel.setVisible(true); //giving the person the option to opt out of selling
+        car.setVisible(false);
+        model.setVisible(false);
+        carLbl.setVisible(false);
+        modelLbl.setVisible(false);
+        
+        yearLbl.setText("Price");
+        milesLbl.setText("Customer");
+        
+        year.clear(); //clearing the textField of year(=>price)
+        miles.clear(); //clearing the textField or miles(=>customer)
+     
+    }
     
+    private void sellBtnAction(ActionEvent event) {
+        if ((year.getText() == null || year.getText().length() == 0)) {
+                invalid.setText("Invalid requirements.");
+                valid.setText(null);
+        }  else if ((miles.getText() == null || miles.getText().length() == 0)) {
+                invalid.setText("Invalid requirements.");
+                valid.setText(null);
+        } else {
+            
+            //TODO
+           
+            cancelBtn(event);
+            valid.setText("Car Sold!");
+        }
+    }
     @FXML
     private void handleClicked(MouseEvent event) {
+        
         delete.setVisible(true); //displaying the delete button
         update.setVisible(true); //displaying the update button
         cancel.setVisible(true); //displaying the cancel button
@@ -248,6 +339,8 @@ public class FXMLDocumentController implements Initializable {
             year.setText(displayYear);
             miles.setText(displayMiles);
             
+            insert.setText("Want to sell?"); //Giving the user the option to sell the car
+            
         } else {
             //disappear buttons after deleting
             delete.setVisible(false);
@@ -258,6 +351,12 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void cancelBtn(ActionEvent event) {
+        car.setVisible(true);
+        model.setVisible(true);
+        carLbl.setVisible(true);
+        modelLbl.setVisible(true);
+        yearLbl.setText("Year");
+        milesLbl.setText("Miles");
         delete.setVisible(false);
         update.setVisible(false);
         cancel.setVisible(false);
@@ -269,6 +368,7 @@ public class FXMLDocumentController implements Initializable {
         model.clear();
         year.clear();
         miles.clear();
+        insert.setText("Insert"); //setting button back to Insert
     }//End of ccancelBtn
     
     @FXML
@@ -306,39 +406,25 @@ private void handleEnterKey(KeyEvent event) {
         insertBtn(insertEvent);
     }
 }
-/*
+
 @FXML
-private void handleArrowKey(KeyEvent event) {
-    if(event.getCode() == KeyCode.UP){
+private void goToCarInventory(ActionEvent event) {
+   if (scene2 == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLDocument2.fxml"));
+                Parent scene2Root = loader.load();
+                FXMLDocument2Controller = loader.getController();
+                FXMLDocument2Controller.scene1 = scene1;
+                FXMLDocument2Controller.FXMLDocumentController = this;
+                scene2 = new Scene(scene2Root);
+            } catch (Exception ex) {
+                
+            }
+        }
         
-        Person data = table.getSelectionModel().getSelectedItem();
-        
-        String displayCar = data.getCar();
-        String displayModel = data.getModel();
-        String displayYear = data.getYear();
-        String displayMiles = data.getMiles();
-       
-        car.setText(displayCar);
-        model.setText(displayModel);
-        year.setText(displayYear);
-        miles.setText(displayMiles);
-       
-    } else if (event.getCode() == KeyCode.DOWN) {
-        Person data = table.getSelectionModel().getSelectedItem();
-        
-        String displayCar = data.getCar();
-        String displayModel = data.getModel();
-        String displayYear = data.getYear();
-        String displayMiles = data.getMiles();
-           
-        car.setText(displayCar);
-        model.setText(displayModel);
-        year.setText(displayYear);
-        miles.setText(displayMiles);
-       
-    }
-     
+        stage.setScene(scene2);
+        FXMLDocument2Controller.start(stage); 
 }
-*/
+
     
 }//End of FXMLDocController class

@@ -6,35 +6,39 @@
 package finalproject;
 
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
  * @author rolandoruche
- * 
- * 
- * Commit test number:  whatever
  */
 public class FinalProject extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLDocument.fxml"));
+        Parent root = loader.load();
+        FXMLDocumentController FXMLDocumentController = loader.getController();
         
         Scene scene = new Scene(root);
         
-        
-        //this part for testing, not necessary
-        MySQLConnect con = new MySQLConnect();
-        con.newRow(1);
-        con.deleteFromTable(1);
-        //end test
-        
         stage.setScene(scene);
         stage.show();
+        
+        FXMLDocumentController.start(stage); 
+       
+        /*
+        final ObservableList<Person> data;
+        
+        final ObservableList<Customer> data2;
+        */
+        
     }
 
     /**
@@ -44,4 +48,5 @@ public class FinalProject extends Application {
         launch(args);
     }
     
-}//Testing comment!!
+}//Testing comment
+
