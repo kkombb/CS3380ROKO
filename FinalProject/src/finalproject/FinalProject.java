@@ -16,7 +16,7 @@ import javafx.stage.Stage;
  * @author rolandoruche
  * 
  * 
- * Commit test number: whatever
+ * Commit test number:  whatever
  */
 public class FinalProject extends Application {
     
