@@ -36,15 +36,20 @@ public class MySQLConnect {
         }
         
         Statement stmt = null;
-        String statement = "SELECT * FROM users;";      //!!!!change from "users" to the table being used, either inventory or sales
+        String statement1 = "SELECT * FROM inventory;";      //!!!!change from "users" to the table being used, either inventory or sales
+        String statement2 = "SELECT * FROM sales;";
         
         //transfer result set to an instance of either SoldCar or InventoryCar
         //I need the list instance from Roland's stuff
             try {
                 stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(statement);
+                ResultSet rs = stmt.executeQuery(statement1);
                 while (rs.next()) {
-                    System.out.println(rs.getString("username"));
+                    System.out.println(rs.getString(""));
+                }
+                ResultSet rs2 = stmt.executeQuery(statement2);
+                while (rs2.next()) {
+                    System.out.println(rs2.getString(""));
                 }
             } catch (SQLException e ) {
                 System.out.println(e);
@@ -54,7 +59,7 @@ public class MySQLConnect {
         conn.close();
     }
     
-    public void updateTable(int table) throws Exception{
+    public void updateRow(int table) throws Exception{
         
         System.out.println("Connecting to MySQL Server...");
         Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -86,6 +91,7 @@ public class MySQLConnect {
         
     }
     
+    //this function should be in same place as newRow as far as functionality is concerned
     public void deleteFromTable(int table) throws Exception{
         
         System.out.println("Connecting to MySQL Server...");
@@ -101,12 +107,16 @@ public class MySQLConnect {
         } 
         
         Statement stmt = null;
-
+        int vin = 1;
+        String statement1 = "DELETE FROM inventory WHERE vin = ";
+        String statement2 = "SELECT * from inventory";
         try {
-           stmt = conn.createStatement();
-           ResultSet rs = stmt.executeQuery("DELETE"); //create the delete statement based on whats being deleted
+           stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+           stmt.executeUpdate(statement1 + vin + ";"); //create the delete statement based on whats being deleted
+           ResultSet rs = stmt.executeQuery(statement2);
            while (rs.next()) {
-               System.out.println(rs.getString("username"));
+               //this line will be replaced by actually copying data into the TableView
+               System.out.println(rs.getInt("vin") + rs.getString("make") + rs.getString("model") + rs.getInt("year") + rs.getFloat("miles"));
            }
        } catch (SQLException e ) {
            System.out.println(e);
@@ -117,6 +127,7 @@ public class MySQLConnect {
         conn.close();  
     }
     
+    //this function now works, only needs to replace example values with values given by the View
     public void newRow(int table) throws Exception{
                 
         System.out.println("Connecting to MySQL Server...");
@@ -132,12 +143,18 @@ public class MySQLConnect {
         } 
         
         Statement stmt = null;
-
+        
+        //test post please ignore
+        String statement1 = "INSERT INTO inventory(vin, make, model, year, miles) VALUES ('1', 'Ford', 'Bronco', '1984', '10000');";
+        String statement2 = "SELECT * FROM inventory;";
         try {
-           stmt = conn.createStatement();
-           ResultSet rs = stmt.executeQuery("NEW ROW"); //create a new row statement based on new data
+           stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+           stmt.executeUpdate(statement1); //create a new row statement based on new data
+           ResultSet rs = stmt.executeQuery(statement2);
+
            while (rs.next()) {
-               System.out.println(rs.getString("username"));
+               System.out.println(rs.getInt("vin") + rs.getString("make") + rs.getString("model") + rs.getInt("year") + rs.getFloat("miles"));   
            }
        } catch (SQLException e ) {
            System.out.println(e);
