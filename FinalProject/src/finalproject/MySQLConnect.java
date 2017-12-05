@@ -127,6 +127,7 @@ public class MySQLConnect {
         conn.close();  
     }
     
+    
     //this function now works, only needs to replace example values with values given by the View
     public void newRow(int table) throws Exception{
                 
