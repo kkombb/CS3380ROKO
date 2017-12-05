@@ -18,6 +18,13 @@ import javafx.collections.ObservableList;
  *
  * @author rolandoruche
  */
+
+/*
+    FOR FUTURE REFERENCE FOR CONVERSION TO FINAL VERSION
+    PERSON == InvetoryCar
+    CUSTOMER == SoldCar
+    Singleton == translator between scenes
+*/
 public class FinalProject extends Application {
     
     @Override
