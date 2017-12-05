@@ -80,9 +80,19 @@ public class FXMLDocument2Controller implements Initializable {
         table2.setItems(data);
         
         
-        //ObservableList<Person> data2 = table.getItems();
+        
         
     }    
+    
+    
+    @FXML
+    private void handleTestButton(ActionEvent event) {
+        String str1 = Singleton.getInstance().getCar().getText();
+        String str2 = Singleton.getInstance().getModel().getText();
+
+        System.out.println(str1);
+        System.out.println(str2);
+    }
     
     @FXML
     private void goBackToCarDealership(ActionEvent event) {

@@ -138,6 +138,11 @@ public class FXMLDocumentController implements Initializable {
         update.setVisible(false);
         cancel.setVisible(false);
         
+        //Test
+        Singleton.getInstance().setCar(car);
+        Singleton.getInstance().setModel(model);
+        
+        
     }//End of initialize    
     
     public void start(Stage stage) {
@@ -203,6 +208,7 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void insertBtn(ActionEvent event) {   
+        
         ObservableList<Person> data = table.getItems();
         
         invalid.setText(null);
@@ -236,6 +242,8 @@ public class FXMLDocumentController implements Initializable {
             //diplaying items on the table
             table.setItems(data);
            
+            
+            
             valid.setText("Queue inserted!");
             invalid.setText(null);
         }
@@ -314,6 +322,7 @@ public class FXMLDocumentController implements Initializable {
     }
     @FXML
     private void handleClicked(MouseEvent event) {
+        
         delete.setVisible(true); //displaying the delete button
         update.setVisible(true); //displaying the update button
         cancel.setVisible(true); //displaying the cancel button
