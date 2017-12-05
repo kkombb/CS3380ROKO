@@ -34,10 +34,10 @@ public class FinalProject extends Application {
         FXMLDocumentController.start(stage); 
        
         /*
-        final ObservableList<Person> data;
-        
-        final ObservableList<Customer> data2;
-        */
+         *final ObservableList<Person> data;
+         *
+         *final ObservableList<Customer> data2;
+         */
         
     }
 
