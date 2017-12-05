@@ -29,7 +29,8 @@ public class FinalProject extends Application {
         
         //this part for testing, not necessary
         MySQLConnect con = new MySQLConnect();
-        con.showTable(1);
+        con.newRow(1);
+        con.deleteFromTable(1);
         
         stage.setScene(scene);
         stage.show();
