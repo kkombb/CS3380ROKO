@@ -73,11 +73,20 @@ public class MySQLConnect {
             System.out.println(ex);
         } 
         
+        //establish criteria to update
+        int vin = 0;
+        String tablename = "inventory";
+        String columns = "";
+        String condition = "vin = " + vin;
+        
+        
         Statement stmt = null;
-
+        String statement1 = "UPDATE" + tablename + "SET" + columns + "WHERE" + condition; //query to update
+        String statement2 = "SELECT * FROM inventory";
         try {
-           stmt = conn.createStatement();
-           ResultSet rs = stmt.executeQuery("UPDATE" + ""); //create the update statement based on whats being updated
+           stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+           stmt.executeUpdate(statement1); //create the update statement based on whats being updated
+           ResultSet rs = stmt.executeQuery(statement2);
            while (rs.next()) {
                System.out.println(rs.getString("username"));
            }
