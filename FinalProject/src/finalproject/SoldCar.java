@@ -7,7 +7,7 @@ package finalproject;
 
 /**
  *
- * @author kirtisorendorff
+ * @author kirtisorendorff 
  */
 public class SoldCar {
     
