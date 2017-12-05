@@ -26,6 +26,11 @@ public class FinalProject extends Application {
         
         Scene scene = new Scene(root);
         
+        
+        //this part for testing, not necessary
+        MySQLConnect con = new MySQLConnect();
+        con.showTable(1);
+        
         stage.setScene(scene);
         stage.show();
     }
