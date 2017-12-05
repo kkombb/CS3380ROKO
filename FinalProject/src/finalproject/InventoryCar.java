@@ -7,7 +7,7 @@ package finalproject;
 
 /**
  *
- * @author coast
+ * @author kirtisorendorff
  */
 public class InventoryCar {
     
