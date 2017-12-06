@@ -111,7 +111,8 @@ public class FXMLDocumentController implements Initializable {
     private FXMLDocument2Controller FXMLDocument2Controller; //doc2 controller
     
     
-    
+    //SQL Connection instance
+    MySQLConnect sql = new MySQLConnect();
     
     
     @Override
@@ -202,6 +203,13 @@ public class FXMLDocumentController implements Initializable {
                 //Set table row selection mode to null
                 table.getSelectionModel().select(null);
                 insert.setText("Insert"); //setting button back to Insert
+                
+                //sql test, 1 = inventory table
+                try{
+                    sql.showTable(1);
+                } catch (Exception e){
+                    System.out.println(e);
+                }
             }//End of else       
         }//End of else
     }//End of updateBtn
@@ -245,8 +253,15 @@ public class FXMLDocumentController implements Initializable {
             
             valid.setText("Queue inserted!");
             invalid.setText(null);
+            
+                //sql test, 1 = inventory table
+                try{
+                    sql.showTable(1);
+                } catch (Exception e){
+                    System.out.println(e);
+                }            
         }
-        
+       
     }//End of insertBtn
    
     @FXML
@@ -278,6 +293,14 @@ public class FXMLDocumentController implements Initializable {
             //Set table roll selection mode to null
             table.getSelectionModel().select(null);
             insert.setText("Insert"); //setting button back to Insert
+            
+                //sql test, 1 = inventory table
+                try{
+                    sql.showTable(1);
+                } catch (Exception e){
+                    System.out.println(e);
+                }
+                
         } else {
             invalid.setText(null);
             valid.setText(null);

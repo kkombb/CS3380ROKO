@@ -44,10 +44,14 @@ public class MySQLConnect {
             try {
                 stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(statement1);
+                
+                System.out.println("Inventory:");
                 while (rs.next()) {
                     System.out.println(rs.getString(""));
                 }
                 ResultSet rs2 = stmt.executeQuery(statement2);
+                
+                System.out.println("Sales:");
                 while (rs2.next()) {
                     System.out.println(rs2.getString(""));
                 }
