@@ -23,6 +23,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import java.sql.*;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -123,7 +124,7 @@ public class FXMLDocumentController implements Initializable {
     private Scene scene2; //car inventory scene
     private FXMLDocument2Controller FXMLDocument2Controller; //doc2 controller
     
-    
+    MySQLConnect sql = new MySQLConnect();
     
     static ObservableList<Inventory> data;
     
@@ -174,6 +175,7 @@ public class FXMLDocumentController implements Initializable {
         Singleton.getInstance().setValid(valid);
         Singleton.getInstance().setInvalid(invalid);
         
+
     }//End of initialize    
     
     public void start(Stage stage) {
@@ -243,7 +245,7 @@ public class FXMLDocumentController implements Initializable {
     }//End of updateBtn
     
     @FXML
-    private void insertBtn(ActionEvent event) {  
+    private void insertBtn(ActionEvent event) throws Exception{  
          data = table.getItems();
         
         invalid.setText(null);
@@ -265,13 +267,17 @@ public class FXMLDocumentController implements Initializable {
         } else if("Want to sell?".equals(insert.getText())) { //For selling purposes
                 goToCarInventory(event);
                 setVisible();
+                
         } else {
+            //add to sql list
             data.add(new Inventory(
                 car.getText(),
                 model.getText(),
                 year.getText(),
                 miles.getText(),
                 vin.getText()));
+            //add the new row to sql
+            //sql.newRow(1);
             car.clear();
             model.clear();
             year.clear();
@@ -344,7 +350,7 @@ public class FXMLDocumentController implements Initializable {
         invalidText.setText(null);
     }
   
-    private void sellBtnAppear(ActionEvent event) {
+    private void sellBtnAppear(ActionEvent event) throws Exception{
         insert.setText("Sell");
         //Setting all button, labels and textfields to invisible
         delete.setVisible(false);
@@ -361,6 +367,7 @@ public class FXMLDocumentController implements Initializable {
         year.clear(); //clearing the textField of year(=>price)
         miles.clear(); //clearing the textField or miles(=>customer)
      
+        
     }
     
     @FXML
@@ -447,7 +454,7 @@ public class FXMLDocumentController implements Initializable {
           
     
 @FXML
-private void handleEnterKey(KeyEvent event) {
+private void handleEnterKey(KeyEvent event) throws Exception{
     ActionEvent insertEvent = null;
     if(event.getCode() == KeyCode.ENTER){
         insertBtn(insertEvent);
@@ -455,7 +462,7 @@ private void handleEnterKey(KeyEvent event) {
 }//End of handleEnterKey
 
 @FXML
-private void goToCarInventory(ActionEvent event) {
+private void goToCarInventory(ActionEvent event) throws Exception{
    if (scene2 == null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLDocument2.fxml"));
@@ -464,6 +471,8 @@ private void goToCarInventory(ActionEvent event) {
                 FXMLDocument2Controller.scene1 = scene1;
                 FXMLDocument2Controller.FXMLDocumentController = this;
                 scene2 = new Scene(scene2Root);
+                
+                sql.showTable(2);
             } catch (Exception ex) {
                 
             }

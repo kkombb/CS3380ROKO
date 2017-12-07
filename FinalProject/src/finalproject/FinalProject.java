@@ -30,6 +30,10 @@ public class FinalProject extends Application {
         stage.setScene(scene);
         stage.show();
         
+        MySQLConnect sql = new MySQLConnect();
+        sql.showTable(1);
+
+        
         FXMLDocumentController.start(stage); 
         
     }
