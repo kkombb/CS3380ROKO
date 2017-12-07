@@ -73,7 +73,7 @@ public class FXMLDocumentController implements Initializable {
     private TextField miles; //textfield for miles box (=>converts to "miles")
     
     @FXML
-    private TableView<Person> table; 
+    private TableView<Inventory> table; 
     
     @FXML
     private TableColumn carClmn;
@@ -110,6 +110,8 @@ public class FXMLDocumentController implements Initializable {
     private Scene scene2; //car inventory scene
     private FXMLDocument2Controller FXMLDocument2Controller; //doc2 controller
     
+    static ObservableList<Inventory> data;
+    
     
     //SQL Connection instance
     MySQLConnect sql = new MySQLConnect();
@@ -120,16 +122,18 @@ public class FXMLDocumentController implements Initializable {
         // TODO
         
         //Creating an Obsevable list
-        final ObservableList<Person> data = FXCollections.observableArrayList(
-            new Person("Porsche", "991 Turbo", "1996", "15000")
+        data = FXCollections.observableArrayList(
+            //IN THEORY    
+            //while (row->next) {new Inventory(get row from MySQLConnect.showTable)}
+            new Inventory("Porsche", "991 Turbo", "1996", "15000")
         );
        
        
         //Associating Data with columns
-        carClmn.setCellValueFactory(new PropertyValueFactory<Person, String>("car"));
-        modelClmn.setCellValueFactory(new PropertyValueFactory<Person, String>("model"));
-        yearClmn.setCellValueFactory(new PropertyValueFactory<Person, String>("year"));
-        milesClmn.setCellValueFactory(new PropertyValueFactory<Person, String>("miles"));
+        carClmn.setCellValueFactory(new PropertyValueFactory<Inventory, String>("car"));
+        modelClmn.setCellValueFactory(new PropertyValueFactory<Inventory, String>("model"));
+        yearClmn.setCellValueFactory(new PropertyValueFactory<Inventory, String>("year"));
+        milesClmn.setCellValueFactory(new PropertyValueFactory<Inventory, String>("miles"));
         
         //Add data items inside table
         table.setItems(data);
@@ -177,12 +181,14 @@ public class FXMLDocumentController implements Initializable {
                 valid.setText(null);
             } else {
                 
-                Person data = table.getSelectionModel().getSelectedItem();
+                Inventory data = table.getSelectionModel().getSelectedItem();
                 
                 data.setCar(car.getText());
                 data.setModel(model.getText());
                 data.setYear(year.getText());
                 data.setMiles(miles.getText());
+                
+                //update the sql table
                
                 table.refresh(); //refrehes the full table
                 
@@ -216,7 +222,7 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void insertBtn(ActionEvent event) {  
-        ObservableList<Person> data = table.getItems();
+        ObservableList<Inventory> data = table.getItems();
         
         invalid.setText(null);
         if ((car.getText() == null || car.getText().length() == 0)) {
@@ -236,7 +242,7 @@ public class FXMLDocumentController implements Initializable {
         } else if("Sell".equals(insert.getText())) {
                     sellBtnAction(event);
         } else {
-            data.add(new Person(
+            data.add(new Inventory(
                 car.getText(),
                 model.getText(),
                 year.getText(),
@@ -351,7 +357,7 @@ public class FXMLDocumentController implements Initializable {
         
         table.setEditable(true);
         if(table.getSelectionModel().getSelectedItem() != null) {
-            Person data = table.getSelectionModel().getSelectedItem();
+            Inventory data = table.getSelectionModel().getSelectedItem();
             String displayCar = data.getCar();
             String displayModel = data.getModel();
             String displayYear = data.getYear();

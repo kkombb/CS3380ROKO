@@ -15,6 +15,11 @@ import java.sql.Statement;
  *
  * @author kirtisorendorff 
  */
+
+
+//FOR INT TABLE:
+//      1 = inventory
+//      2 = sales
 public class MySQLConnect {
     
     public MySQLConnect(){
@@ -23,6 +28,7 @@ public class MySQLConnect {
     
     public void showTable(int table) throws Exception{
         
+        System.out.println(FXMLDocumentController.data);
         System.out.println("Connecting to MySQL Server...");
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         
@@ -36,24 +42,41 @@ public class MySQLConnect {
         }
         
         Statement stmt = null;
-        String statement1 = "SELECT * FROM inventory;";      //!!!!change from "users" to the table being used, either inventory or sales
-        String statement2 = "SELECT * FROM sales;";
+        String statement1 = "";
+        String tablename = "";
         
+        switch(table){
+            case 1:
+                tablename = "inventory";
+                break;
+            case 2:
+                tablename = "sales";
+                break;
+        }
+        
+        statement1 = "SELECT * FROM "+tablename+";";
         //transfer result set to an instance of either SoldCar or InventoryCar
         //I need the list instance from Roland's stuff
             try {
                 stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(statement1);
                 
-                System.out.println("Inventory:");
+                System.out.println(tablename+":");
                 while (rs.next()) {
-                    System.out.println(rs.getString(""));
-                }
-                ResultSet rs2 = stmt.executeQuery(statement2);
-                
-                System.out.println("Sales:");
-                while (rs2.next()) {
-                    System.out.println(rs2.getString(""));
+                    if(table == 1){
+                        System.out.println(rs.getString("vin"));
+                        System.out.println(rs.getString("car"));
+                        System.out.println(rs.getString("model"));
+                        System.out.println(rs.getInt("year"));
+                        System.out.println(rs.getInt("miles"));
+                    }
+                    if(table == 2){
+                        System.out.println(rs.getString("vin"));
+                        System.out.println(rs.getString("car"));
+                        System.out.println(rs.getString("model"));
+                        System.out.println(rs.getInt("price"));
+                        System.out.println(rs.getString("name"));
+                    }
                 }
             } catch (SQLException e ) {
                 System.out.println(e);
@@ -78,21 +101,55 @@ public class MySQLConnect {
         } 
         
         //establish criteria to update
-        int vin = 0;
-        String tablename = "inventory";
+        String vin = "1"; //get vin from inventory class
+        int year = 2006;
+        String car = "Jeep";
+        String model = "Wrangler";
+        int miles = 1234;
+        String name = "Varg Vikernes";
+        int price = 18;
+        String tablename = "";
         String columns = "";
-        String condition = "vin = " + vin;
+        
+        
+        switch(table){
+            case 1:
+                tablename = "inventory";
+                columns = "car = '"+car+"', model = '"+model+"', year = "+year+", miles = "+miles;
+                break;
+            case 2:
+                tablename = "sales";
+                columns = "car = '"+car+"', model = '"+model+"', price = "+price+", name = '"+name+"'";
+                break;
+        }
+        
+        String condition = "vin = " + vin + ";";
         
         
         Statement stmt = null;
-        String statement1 = "UPDATE" + tablename + "SET" + columns + "WHERE" + condition; //query to update
-        String statement2 = "SELECT * FROM inventory";
+        String statement1 = "UPDATE " + tablename + " SET " + columns + " WHERE " + condition; //query to update
+        System.out.println(statement1);
+        String statement2 = "SELECT * FROM " + tablename + ";";
         try {
            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
            stmt.executeUpdate(statement1); //create the update statement based on whats being updated
            ResultSet rs = stmt.executeQuery(statement2);
            while (rs.next()) {
-               System.out.println(rs.getString("username"));
+                    if(table == 1){
+                        System.out.println(rs.getString("vin"));
+                        System.out.println(rs.getString("car"));
+                        System.out.println(rs.getString("model"));
+                        System.out.println(rs.getInt("year"));
+                        System.out.println(rs.getInt("miles"));
+                    }
+                    //sales table output
+                    if(table == 2){
+                        System.out.println(rs.getString("vin"));
+                        System.out.println(rs.getString("car"));
+                        System.out.println(rs.getString("model"));
+                        System.out.println(rs.getInt("price"));
+                        System.out.println(rs.getString("name"));
+                    }
            }
        } catch (SQLException e ) {
            System.out.println(e);
@@ -104,7 +161,6 @@ public class MySQLConnect {
         
     }
     
-    //this function should be in same place as newRow as far as functionality is concerned
     public void deleteFromTable(int table) throws Exception{
         
         System.out.println("Connecting to MySQL Server...");
@@ -120,16 +176,45 @@ public class MySQLConnect {
         } 
         
         Statement stmt = null;
-        int vin = 1;
-        String statement1 = "DELETE FROM inventory WHERE vin = ";
-        String statement2 = "SELECT * from inventory";
+        //vin is example data
+        String vin = "1";
+        String tablename = "";
+        
+        //select table
+        switch(table){
+            case 1:
+                tablename = "inventory";
+                break;
+            case 2:
+                tablename = "sales";
+                break;
+        }
+        
+        String statement1 = "DELETE FROM "+tablename+" WHERE vin = "+vin+";";
+        String statement2 = "SELECT * from "+tablename+";";
+        
         try {
            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-           stmt.executeUpdate(statement1 + vin + ";"); //create the delete statement based on whats being deleted
+           stmt.executeUpdate(statement1); //create the delete statement based on whats being deleted
            ResultSet rs = stmt.executeQuery(statement2);
            while (rs.next()) {
                //this line will be replaced by actually copying data into the TableView
-               System.out.println(rs.getInt("vin") + rs.getString("make") + rs.getString("model") + rs.getInt("year") + rs.getFloat("miles"));
+//               System.out.println(rs.getInt("vin") + rs.getString("make") + rs.getString("model") + rs.getInt("year") + rs.getFloat("miles"));
+                    if(table == 1){
+                        System.out.println(rs.getString("vin"));
+                        System.out.println(rs.getString("car"));
+                        System.out.println(rs.getString("model"));
+                        System.out.println(rs.getInt("year"));
+                        System.out.println(rs.getInt("miles"));
+                    }
+                    //sales table output
+                    if(table == 2){
+                        System.out.println(rs.getString("vin"));
+                        System.out.println(rs.getString("car"));
+                        System.out.println(rs.getString("model"));
+                        System.out.println(rs.getInt("price"));
+                        System.out.println(rs.getString("name"));
+                    }
            }
        } catch (SQLException e ) {
            System.out.println(e);
@@ -158,10 +243,31 @@ public class MySQLConnect {
         
         Statement stmt = null;
         
-        //test post please ignore
-        //will be adapted to use data from roland's stuff
-        String statement1 = "INSERT INTO inventory(vin, make, model, year, miles) VALUES ('1', 'Ford', 'Bronco', '1984', '10000');";
-        String statement2 = "SELECT * FROM inventory;";
+        //example data
+        String tablename = "";
+        String vin = "1";
+        String car = "Dodge";
+        String model = "Neon";
+        int year = 1999;
+        int miles = 145;
+        int price = 7;
+        String name = "Bob Hope";
+        String statement1 = "";
+        String statement2 = "";
+
+        
+        switch(table){
+            case 1:
+                tablename = "inventory";
+                statement1 = "INSERT INTO "+tablename+" (vin, car, model, year, miles) VALUES ("+vin+", '"+car+"', '"+model+"', "+year+", "+miles+");";
+                break;
+            case 2:
+                tablename = "sales";
+                statement1 = "INSERT INTO "+tablename+" (vin, car, model, price, name) VALUES ("+vin+", '"+car+"', '"+model+"', "+price+", '"+name+"');";
+        }
+        statement2 = "SELECT * FROM "+tablename+";";
+        System.out.println(statement1);
+        
         try {
            stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
@@ -169,7 +275,22 @@ public class MySQLConnect {
            ResultSet rs = stmt.executeQuery(statement2);
 
            while (rs.next()) {
-               System.out.println(rs.getInt("vin") + rs.getString("make") + rs.getString("model") + rs.getInt("year") + rs.getFloat("miles"));   
+                    //inventory table output
+                    if(table == 1){
+                        System.out.println(rs.getString("vin"));
+                        System.out.println(rs.getString("car"));
+                        System.out.println(rs.getString("model"));
+                        System.out.println(rs.getInt("year"));
+                        System.out.println(rs.getInt("miles"));
+                    }
+                    //sales table output
+                    if(table == 2){
+                        System.out.println(rs.getString("vin"));
+                        System.out.println(rs.getString("car"));
+                        System.out.println(rs.getString("model"));
+                        System.out.println(rs.getInt("price"));
+                        System.out.println(rs.getString("name"));
+                    }
            }
        } catch (SQLException e ) {
            System.out.println(e);

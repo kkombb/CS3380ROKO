@@ -46,6 +46,15 @@ public class FinalProject extends Application {
          *final ObservableList<Customer> data2;
          */
         
+        
+        //for MySQLConnect testing
+        MySQLConnect sql = new MySQLConnect();
+        //sql.newRow(2);
+        //sql.updateRow(1);
+        //sql.deleteFromTable(1);
+        sql.showTable(1);
+        sql.showTable(2);
+        
     }
 
     /**

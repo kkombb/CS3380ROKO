@@ -13,7 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
  */
 
   //Public Person class
-    public final class Person {
+    public final class Inventory {
         private final SimpleStringProperty car = new SimpleStringProperty("");
         private final SimpleStringProperty model = new SimpleStringProperty("");
         private final SimpleStringProperty year = new SimpleStringProperty("");
@@ -21,11 +21,11 @@ import javafx.beans.property.SimpleStringProperty;
    
         
     
-        public Person() {
+        public Inventory() {
             this("", "", "", "");
         }
  
-        public Person(String car, String model, String year, String miles) {
+        public Inventory(String car, String model, String year, String miles) {
             setCar(car);
             setModel(model);
             setYear(year);

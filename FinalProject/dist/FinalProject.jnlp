@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="FinalProject.jar" size="17891" download="eager" />
+    <jar href="FinalProject.jar" size="20596" download="eager" />
     <jar href="lib\mysql-connector-java-5.1.44-bin.jar" size="999635" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="FinalProject" >

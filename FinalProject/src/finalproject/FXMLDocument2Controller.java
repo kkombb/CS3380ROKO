@@ -31,7 +31,7 @@ import javafx.stage.Stage;
 public class FXMLDocument2Controller implements Initializable {
 
     @FXML
-    private TableView<Customer> table2; //Table for viewing cars sold to customers
+    private TableView<Sales> table2; //Table for viewing cars sold to customers
     
     //COLUMNS
     @FXML
@@ -88,16 +88,16 @@ public class FXMLDocument2Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         
-        final ObservableList<Customer> data = FXCollections.observableArrayList(
-            new Customer("Porsche", "991 Turbo", "56000", "Bob Evans", "12/08/2017")
+        final ObservableList<Sales> data = FXCollections.observableArrayList(
+            new Sales("Porsche", "991 Turbo", "56000", "Bob Evans", "12/08/2017")
         );
         
          //Associating Data with columns
-        carClmn.setCellValueFactory(new PropertyValueFactory<Customer, String>("car"));
-        modelClmn.setCellValueFactory(new PropertyValueFactory<Customer, String>("model"));
-        priceClmn.setCellValueFactory(new PropertyValueFactory<Customer, String>("price"));
-        customerClmn.setCellValueFactory(new PropertyValueFactory<Customer, String>("customer"));
-        dateClmn.setCellValueFactory(new PropertyValueFactory<Customer, String>("date"));
+        carClmn.setCellValueFactory(new PropertyValueFactory<Sales, String>("car"));
+        modelClmn.setCellValueFactory(new PropertyValueFactory<Sales, String>("model"));
+        priceClmn.setCellValueFactory(new PropertyValueFactory<Sales, String>("price"));
+        customerClmn.setCellValueFactory(new PropertyValueFactory<Sales, String>("customer"));
+        dateClmn.setCellValueFactory(new PropertyValueFactory<Sales, String>("date"));
         
         
         
@@ -122,7 +122,7 @@ public class FXMLDocument2Controller implements Initializable {
     
     @FXML
     private void sellBtnAction(ActionEvent event) {
-        ObservableList<Customer> data = table2.getItems();
+        ObservableList<Sales> data = table2.getItems();
         String str1 = Singleton.getInstance().getCar().getText();
         String str2 = Singleton.getInstance().getModel().getText();
         
@@ -135,7 +135,7 @@ public class FXMLDocument2Controller implements Initializable {
                 invalid.setText("Invalid requirements.");
                 valid.setText(null);
         } else {
-            data.add(new Customer(
+            data.add(new Sales(
                str1,
                price.getText(),
                price.getText(),

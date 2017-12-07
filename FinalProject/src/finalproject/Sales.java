@@ -14,7 +14,7 @@ import javafx.beans.property.SimpleStringProperty;
  */
 
   //Public Customer class
-    public final class Customer {
+    public final class Sales {
         private final SimpleStringProperty car = new SimpleStringProperty("");
         private final SimpleStringProperty model = new SimpleStringProperty("");
         private final SimpleStringProperty price = new SimpleStringProperty("");
@@ -23,11 +23,11 @@ import javafx.beans.property.SimpleStringProperty;
    
         
     
-        public Customer() {
+        public Sales() {
             this("", "", "", "","");
         }
  
-        public Customer(String car, String model, String price, String customer, String date) {
+        public Sales(String car, String model, String price, String customer, String date) {
             setCar(car);
             setModel(model);
             setPrice(price);
