@@ -13,23 +13,25 @@ import javafx.beans.property.SimpleStringProperty;
  */
 
   //Public Person class
-    public final class Person {
+    public final class Inventory {
         private final SimpleStringProperty car = new SimpleStringProperty("");
         private final SimpleStringProperty model = new SimpleStringProperty("");
         private final SimpleStringProperty year = new SimpleStringProperty("");
         private final SimpleStringProperty miles = new SimpleStringProperty("");
+        private final SimpleStringProperty vin = new SimpleStringProperty("");
    
         
     
-        public Person() {
-            this("", "", "", "");
+        public Inventory() {
+            this("", "", "", "", "");
         }
  
-        public Person(String car, String model, String year, String miles) {
+        public Inventory(String car, String model, String year, String miles, String vin) {
             setCar(car);
             setModel(model);
             setYear(year);
             setMiles(miles);
+            setVin(vin);
         }
    
      
@@ -64,6 +66,15 @@ import javafx.beans.property.SimpleStringProperty;
         public void setMiles(String milesVar) {
             this.miles.set(milesVar);
         }
+        
+        public String getVin() {
+            return vin.get();
+        }
+        
+        public void setVin(String vinVar) {
+            this.vin.set(vinVar);
+        }
+        
         
     }//End of Final Person class
     

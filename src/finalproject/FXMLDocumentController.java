@@ -54,10 +54,14 @@ public class FXMLDocumentController implements Initializable {
     private Label modelLbl; //label for model
     
     @FXML
-    private Label yearLbl; //label for year (=>converts to "priceLbl")
+    private Label yearLbl; //label for year 
     
     @FXML
-    private Label milesLbl; //label for miles (=>converts to "customerLbl")
+    private Label milesLbl; //label for miles
+    
+    @FXML
+    private Label vinLbl; //label for VIN
+    
     
    
     @FXML
@@ -67,13 +71,17 @@ public class FXMLDocumentController implements Initializable {
     private TextField model; //textfield for model box
     
     @FXML
-    private TextField year; //textfield for year box (=>converts to "price")
+    private TextField year; //textfield for year box 
     
     @FXML
-    private TextField miles; //textfield for miles box (=>converts to "miles")
+    private TextField miles; //textfield for miles box 
     
     @FXML
-    private TableView<Person> table; 
+    private TextField vin; //textfield for vin
+    
+    
+    @FXML
+    private TableView<Inventory> table; 
     
     @FXML
     private TableColumn carClmn;
@@ -86,6 +94,9 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private TableColumn milesClmn;
+    
+    @FXML
+    private TableColumn vinClmn;
     
     @FXML
     private Button insert;
@@ -103,6 +114,8 @@ public class FXMLDocumentController implements Initializable {
     private Button sell; //Button to sell car to customer
     
     
+   
+    
     
     //FOR SWITCHING SCENES
     private Stage stage;
@@ -112,23 +125,29 @@ public class FXMLDocumentController implements Initializable {
     
     
     
-    
+    static ObservableList<Inventory> data;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         
         //Creating an Obsevable list
-        final ObservableList<Person> data = FXCollections.observableArrayList(
-            new Person("Porsche", "991 Turbo", "1996", "15000")
-        );
+        data = FXCollections.observableArrayList();
        
        
         //Associating Data with columns
-        carClmn.setCellValueFactory(new PropertyValueFactory<Person, String>("car"));
-        modelClmn.setCellValueFactory(new PropertyValueFactory<Person, String>("model"));
-        yearClmn.setCellValueFactory(new PropertyValueFactory<Person, String>("year"));
-        milesClmn.setCellValueFactory(new PropertyValueFactory<Person, String>("miles"));
+        carClmn.setCellValueFactory(new PropertyValueFactory<Inventory, String>("car"));
+        modelClmn.setCellValueFactory(new PropertyValueFactory<Inventory, String>("model"));
+        yearClmn.setCellValueFactory(new PropertyValueFactory<Inventory, String>("year"));
+        milesClmn.setCellValueFactory(new PropertyValueFactory<Inventory, String>("miles"));
+        vinClmn.setCellValueFactory(new PropertyValueFactory<Inventory, String>("vin"));
+        
+        
+        car.setPromptText("Porsche");
+        model.setPromptText("991 Turbo");
+        year.setPromptText("1996");
+        miles.setPromptText("15000");
+        vin.setPromptText("1G1789FL523L6122F");
         
         //Add data items inside table
         table.setItems(data);
@@ -141,13 +160,28 @@ public class FXMLDocumentController implements Initializable {
         //Test
         Singleton.getInstance().setCar(car);
         Singleton.getInstance().setModel(model);
+        Singleton.getInstance().setYear(year);
+        Singleton.getInstance().setMiles(miles);
+        Singleton.getInstance().setVin(vin);
         
+        Singleton.getInstance().setInsert(insert);
+        Singleton.getInstance().setDelete(delete);
+        Singleton.getInstance().setUpdate(update);
+        Singleton.getInstance().setCancel(cancel);
+        
+        Singleton.getInstance().setTable(table);
+        
+        Singleton.getInstance().setValid(valid);
+        Singleton.getInstance().setInvalid(invalid);
         
     }//End of initialize    
     
     public void start(Stage stage) {
         this.stage = stage;
         scene1 = stage.getScene();
+        valid.setText(null);
+        invalid.setText(null);
+        
       
     }
   
@@ -176,12 +210,13 @@ public class FXMLDocumentController implements Initializable {
                 valid.setText(null);
             } else {
                 
-                Person data = table.getSelectionModel().getSelectedItem();
+                Inventory data = table.getSelectionModel().getSelectedItem();
                 
                 data.setCar(car.getText());
                 data.setModel(model.getText());
                 data.setYear(year.getText());
                 data.setMiles(miles.getText());
+                data.setVin(vin.getText());
                
                 table.refresh(); //refrehes the full table
                 
@@ -193,6 +228,7 @@ public class FXMLDocumentController implements Initializable {
                 model.clear();
                 year.clear();
                 miles.clear();
+                vin.clear(); 
                 
                 //disappear buttons after updating
                 delete.setVisible(false);
@@ -207,9 +243,8 @@ public class FXMLDocumentController implements Initializable {
     }//End of updateBtn
     
     @FXML
-    private void insertBtn(ActionEvent event) {   
-        
-        ObservableList<Person> data = table.getItems();
+    private void insertBtn(ActionEvent event) {  
+         data = table.getItems();
         
         invalid.setText(null);
         if ((car.getText() == null || car.getText().length() == 0)) {
@@ -224,20 +259,24 @@ public class FXMLDocumentController implements Initializable {
         }  else if ((miles.getText() == null || miles.getText().length() == 0)) {
                 invalid.setText("Invalid requirements.");
                 valid.setText(null);
+        } else if ((vin.getText() == null || vin.getText().length() == 0)) {
+                invalid.setText("Invalid requirements.");
+                valid.setText(null);
         } else if("Want to sell?".equals(insert.getText())) { //For selling purposes
-                sellBtnAppear(event);
-        } else if("Sell".equals(insert.getText())) {
-                    sellBtnAction(event);
+                goToCarInventory(event);
+                setVisible();
         } else {
-            data.add(new Person(
+            data.add(new Inventory(
                 car.getText(),
                 model.getText(),
                 year.getText(),
-                miles.getText()));
+                miles.getText(),
+                vin.getText()));
             car.clear();
             model.clear();
             year.clear();
             miles.clear();
+            vin.clear();
             
             //diplaying items on the table
             table.setItems(data);
@@ -275,6 +314,7 @@ public class FXMLDocumentController implements Initializable {
             model.clear();
             year.clear();
             miles.clear();
+            vin.clear();
         
             //Set table roll selection mode to null
             table.getSelectionModel().select(null);
@@ -285,6 +325,24 @@ public class FXMLDocumentController implements Initializable {
         }//End of else
     }//End of deleteBtn
     
+    private void setVisible() {
+        TextField price = Singleton.getInstance().getPrice();
+        TextField customer = Singleton.getInstance().getCustomer();
+        Label priceLbl = Singleton.getInstance().getPriceLbl();
+        Label customerLbl = Singleton.getInstance().getCustomerLbl();
+        Label validText = Singleton.getInstance().getValid();
+        Label invalidText = Singleton.getInstance().getInvalid();
+        Button sellBtn = Singleton.getInstance().getSellBtn();
+        
+        //Setting all buttons labels tFields to visibe in Doc2controller
+        price.setVisible(true);
+        customer.setVisible(true);
+        priceLbl.setVisible(true);
+        customerLbl.setVisible(true);
+        sellBtn.setVisible(true);
+        validText.setText(null);
+        invalidText.setText(null);
+    }
   
     private void sellBtnAppear(ActionEvent event) {
         insert.setText("Sell");
@@ -305,21 +363,6 @@ public class FXMLDocumentController implements Initializable {
      
     }
     
-    private void sellBtnAction(ActionEvent event) {
-        if ((year.getText() == null || year.getText().length() == 0)) {
-                invalid.setText("Invalid requirements.");
-                valid.setText(null);
-        }  else if ((miles.getText() == null || miles.getText().length() == 0)) {
-                invalid.setText("Invalid requirements.");
-                valid.setText(null);
-        } else {
-            
-            //TODO
-           
-            cancelBtn(event);
-            valid.setText("Car Sold!");
-        }
-    }
     @FXML
     private void handleClicked(MouseEvent event) {
         
@@ -329,16 +372,18 @@ public class FXMLDocumentController implements Initializable {
         
         table.setEditable(true);
         if(table.getSelectionModel().getSelectedItem() != null) {
-            Person data = table.getSelectionModel().getSelectedItem();
+            Inventory data = table.getSelectionModel().getSelectedItem();
             String displayCar = data.getCar();
             String displayModel = data.getModel();
             String displayYear = data.getYear();
             String displayMiles = data.getMiles();
+            String displayVin = data.getVin();
            
             car.setText(displayCar);
             model.setText(displayModel);
             year.setText(displayYear);
             miles.setText(displayMiles);
+            vin.setText(displayVin);
             
             insert.setText("Want to sell?"); //Giving the user the option to sell the car
             
@@ -369,6 +414,7 @@ public class FXMLDocumentController implements Initializable {
         model.clear();
         year.clear();
         miles.clear();
+        vin.clear();
         insert.setText("Insert"); //setting button back to Insert
     }//End of ccancelBtn
     
@@ -406,7 +452,7 @@ private void handleEnterKey(KeyEvent event) {
     if(event.getCode() == KeyCode.ENTER){
         insertBtn(insertEvent);
     }
-}
+}//End of handleEnterKey
 
 @FXML
 private void goToCarInventory(ActionEvent event) {
@@ -425,7 +471,7 @@ private void goToCarInventory(ActionEvent event) {
         
         stage.setScene(scene2);
         FXMLDocument2Controller.start(stage); 
-}
+}//End of carInventory
 
     
 }//End of FXMLDocController class

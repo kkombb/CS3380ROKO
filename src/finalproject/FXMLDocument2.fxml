@@ -8,28 +8,47 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="578.0" prefWidth="719.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="finalproject.FXMLDocument2Controller">
+<AnchorPane id="AnchorPane" prefHeight="580.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="finalproject.FXMLDocument2Controller">
    <children>
-      <TableView fx:id="table2" layoutX="13.0" layoutY="64.0" prefHeight="504.0" prefWidth="695.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="64.0">
+      <TableView fx:id="table2" layoutX="5.0" layoutY="76.0" prefHeight="337.0" prefWidth="620.0" AnchorPane.bottomAnchor="167.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="76.0">
         <columns>
-          <TableColumn fx:id="carClmn" prefWidth="124.0" text="Car" />
-          <TableColumn fx:id="modelClmn" prefWidth="132.0" text="Model" />
-            <TableColumn fx:id="priceClmn" prefWidth="147.0" text="Price" />
-            <TableColumn fx:id="customerClmn" minWidth="0.0" prefWidth="149.0" text="Customer" />
-            <TableColumn fx:id="dateClmn" prefWidth="142.0" text="Date" />
+          <TableColumn fx:id="carClmn" prefWidth="115.2066330909729" text="Car" />
+          <TableColumn fx:id="modelClmn" prefWidth="128.79339599609375" text="Model" />
+            <TableColumn fx:id="priceClmn" prefWidth="128.24789428710938" text="Price" />
+            <TableColumn fx:id="customerClmn" minWidth="0.0" prefWidth="123.75210571289062" text="Customer" />
+            <TableColumn fx:id="vinClmn" prefWidth="126.33877563476562" text="VIN" />
         </columns>
       </TableView>
-      <Text layoutX="48.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ROKO Inventory" textAlignment="CENTER" wrappingWidth="623.0">
+      <Text fill="#ff7100" layoutX="2.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ROKO Cars Sold" textAlignment="CENTER" wrappingWidth="623.0">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
-      <MenuButton layoutX="-1.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="87.0" text="Settings">
+      <MenuButton layoutX="-1.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="87.0" text="Settings" textFill="#0066ff">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#goBackToCarDealership" text="Back" />
           <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="About" />
         </items>
       </MenuButton>
-      <Button layoutX="501.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleTestButton" text="Button" />
+      <TextField fx:id="price" layoutX="209.0" layoutY="446.0" onKeyPressed="#handleEnterKey" />
+      <TextField fx:id="customer" layoutX="210.0" layoutY="490.0" onKeyPressed="#handleEnterKey" />
+      <Button fx:id="sellBtn" layoutX="441.0" layoutY="452.0" mnemonicParsing="false" onAction="#sellBtnAction" prefHeight="50.0" prefWidth="120.0" text="Sell" textFill="#0066ff" />
+      <Label fx:id="priceLbl" layoutX="139.0" layoutY="451.0" text="Price" textFill="#0066ff" />
+      <Label fx:id="customerLbl" layoutX="132.0" layoutY="495.0" text="Customer" textFill="#0066ff" />
+      <Label fx:id="valid" alignment="CENTER" layoutX="139.0" layoutY="531.0" prefHeight="17.0" prefWidth="305.0" textFill="#3dc410">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="invalid" alignment="CENTER" layoutX="138.0" layoutY="549.0" prefHeight="17.0" prefWidth="305.0" textFill="RED">
+         <font>
+            <Font name="System Italic" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="sellStatement" alignment="CENTER" layoutX="88.0" layoutY="420.0" prefHeight="17.0" prefWidth="412.0" textFill="#0066ff">
+         <font>
+            <Font name="Cochin Italic" size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

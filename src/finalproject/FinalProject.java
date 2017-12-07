@@ -10,7 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import finalproject.FXMLDocumentController; 
+
 
 /**
  *
@@ -30,6 +30,7 @@ public class FinalProject extends Application {
         stage.show();
         
         FXMLDocumentController.start(stage); 
+        
     }
 
     /**
@@ -39,4 +40,4 @@ public class FinalProject extends Application {
         launch(args);
     }
     
-}
+}//Testing comment
