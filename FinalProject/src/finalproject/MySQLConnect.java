@@ -64,18 +64,25 @@ public class MySQLConnect {
                 System.out.println(tablename+":");
                 while (rs.next()) {
                     if(table == 1){
+                        int year = rs.getInt("year");
+                        int miles = rs.getInt("miles");
+                        Inventory inventory = new Inventory(rs.getString("car"), rs.getString("model"), Integer.toString(year), Integer.toString(miles), rs.getString("vin"));
                         System.out.println(rs.getString("vin"));
                         System.out.println(rs.getString("car"));
                         System.out.println(rs.getString("model"));
                         System.out.println(rs.getInt("year"));
                         System.out.println(rs.getInt("miles"));
+                        FXMLDocumentController.data.add(inventory);
                     }
                     if(table == 2){
+                        int price = rs.getInt("price");
+                        Sales sales = new Sales(rs.getString("car"), rs.getString("model"), Integer.toString(price), rs.getString("name"), rs.getString("vin"));
                         System.out.println(rs.getString("vin"));
                         System.out.println(rs.getString("car"));
                         System.out.println(rs.getString("model"));
                         System.out.println(rs.getInt("price"));
                         System.out.println(rs.getString("name"));
+                        FXMLDocument2Controller.data.add(sales);
                     }
                 }
             } catch (SQLException e ) {
@@ -259,6 +266,8 @@ public class MySQLConnect {
         switch(table){
             case 1:
                 tablename = "inventory";
+                //FXMLDocumentController.data.get(FXMLDocumentController.data.size());
+                System.out.println(FXMLDocumentController.data.get(FXMLDocumentController.data.size()));
                 statement1 = "INSERT INTO "+tablename+" (vin, car, model, year, miles) VALUES ("+vin+", '"+car+"', '"+model+"', "+year+", "+miles+");";
                 break;
             case 2:
