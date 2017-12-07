@@ -93,7 +93,7 @@ public class MySQLConnect {
         conn.close();
     }
     
-    public void updateRow(int table) throws Exception{
+    public void updateRow(int table, int index) throws Exception{
         
         System.out.println("Connecting to MySQL Server...");
         Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -108,29 +108,49 @@ public class MySQLConnect {
         } 
         
         //establish criteria to update
-        String vin = "1"; //get vin from inventory class
-        int year = 2006;
-        String car = "Jeep";
-        String model = "Wrangler";
-        int miles = 1234;
-        String name = "Varg Vikernes";
-        int price = 18;
+        String vin = ""; //get vin from inventory class
+        String year = "";
+        String car = "";
+        String model = "";
+        String miles = "";
+        String name = "";
+        String price = "";
         String tablename = "";
         String columns = "";
+        
+        Inventory inventory;
+        Sales sales;
         
         
         switch(table){
             case 1:
                 tablename = "inventory";
+                inventory = FXMLDocumentController.data.get(index);
+                
+                vin = inventory.getVin();
+                car = inventory.getCar();
+                model = inventory.getModel();
+                year = inventory.getYear();
+                miles = inventory.getMiles();
+                
                 columns = "car = '"+car+"', model = '"+model+"', year = "+year+", miles = "+miles;
+                
                 break;
             case 2:
                 tablename = "sales";
+                sales = FXMLDocument2Controller.data.get(index);
+                
+                vin = sales.getVin();
+                car = sales.getCar();
+                model = sales.getModel();
+                price = sales.getPrice();
+                name = sales.getCustomer();
+                
                 columns = "car = '"+car+"', model = '"+model+"', price = "+price+", name = '"+name+"'";
                 break;
         }
         
-        String condition = "vin = " + vin + ";";
+        String condition = "vin = '" + vin + "';";
         
         
         Statement stmt = null;
@@ -168,7 +188,7 @@ public class MySQLConnect {
         
     }
     
-    public void deleteFromTable(int table) throws Exception{
+    public void deleteFromTable(int table, int index) throws Exception{
         
         System.out.println("Connecting to MySQL Server...");
         Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -184,20 +204,23 @@ public class MySQLConnect {
         
         Statement stmt = null;
         //vin is example data
-        String vin = "1";
+        String vin = "";
+        
         String tablename = "";
         
         //select table
         switch(table){
             case 1:
                 tablename = "inventory";
+                vin = FXMLDocumentController.data.get(index).getVin();
                 break;
             case 2:
                 tablename = "sales";
+                vin = FXMLDocument2Controller.data.get(index).getVin();
                 break;
         }
         
-        String statement1 = "DELETE FROM "+tablename+" WHERE vin = "+vin+";";
+        String statement1 = "DELETE FROM "+tablename+" WHERE vin = '"+vin+"';";
         String statement2 = "SELECT * from "+tablename+";";
         
         try {
@@ -234,7 +257,7 @@ public class MySQLConnect {
     
     
     //this function now works, only needs to replace example values with values given by the View
-    public void newRow(int table) throws Exception{
+    public boolean newRow(int table) throws Exception{
                 
         System.out.println("Connecting to MySQL Server...");
         Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -252,27 +275,51 @@ public class MySQLConnect {
         
         //example data
         String tablename = "";
-        String vin = "1";
-        String car = "Dodge";
-        String model = "Neon";
-        int year = 1999;
-        int miles = 145;
-        int price = 7;
-        String name = "Bob Hope";
+        String vin = "";
+        String car = "";
+        String model = "";
+        String year = "";
+        String miles = "";
+        String price = "";
+        String name = "";
         String statement1 = "";
         String statement2 = "";
+        int index = 0;
+        
+        boolean vinExist = true;
+        
+        Inventory inventory;
+        Sales sales;
 
         
         switch(table){
             case 1:
                 tablename = "inventory";
                 //FXMLDocumentController.data.get(FXMLDocumentController.data.size());
-                System.out.println(FXMLDocumentController.data.get(FXMLDocumentController.data.size()));
-                statement1 = "INSERT INTO "+tablename+" (vin, car, model, year, miles) VALUES ("+vin+", '"+car+"', '"+model+"', "+year+", "+miles+");";
+                index = FXMLDocumentController.data.size();
+                inventory = FXMLDocumentController.data.get(index - 1);
+                
+                vin = inventory.getVin();
+                year = inventory.getYear();
+                car = inventory.getCar();
+                model = inventory.getModel();
+                miles = inventory.getMiles();
+                
+                
+                statement1 = "INSERT INTO "+tablename+" (vin, car, model, year, miles) VALUES ('"+vin+"', '"+car+"', '"+model+"', "+year+", "+miles+");";
                 break;
             case 2:
                 tablename = "sales";
-                statement1 = "INSERT INTO "+tablename+" (vin, car, model, price, name) VALUES ("+vin+", '"+car+"', '"+model+"', "+price+", '"+name+"');";
+                index = FXMLDocument2Controller.data.size();
+                sales = FXMLDocument2Controller.data.get(index - 1);
+                
+                vin = sales.getVin();
+                model = sales.getModel();
+                car = sales.getCar();
+                price = sales.getPrice();
+                name = sales.getCustomer();
+                
+                statement1 = "INSERT INTO "+tablename+" (vin, car, model, price, name) VALUES ('"+vin+"', '"+car+"', '"+model+"', "+price+", '"+name+"');";
         }
         statement2 = "SELECT * FROM "+tablename+";";
         System.out.println(statement1);
@@ -303,11 +350,14 @@ public class MySQLConnect {
            }
        } catch (SQLException e ) {
            System.out.println(e);
+           System.out.println("Cannot output to MySQL...");
+           vinExist = false;
        } finally {
            if (stmt != null) { stmt.close(); }
        }
              
         conn.close();
+        return vinExist;
     }
     
 }

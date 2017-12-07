@@ -80,7 +80,7 @@ public class FXMLDocument2Controller implements Initializable {
     private Label sellStatement; //label for displaying what is being sold
     
     
-    
+    MySQLConnect sql = new MySQLConnect();
     
     //FOR SWITCHING SCENES
     private Stage stage;
@@ -120,14 +120,14 @@ public class FXMLDocument2Controller implements Initializable {
         String getCar = Singleton.getInstance().getCar().getText();
         String getModel = Singleton.getInstance().getModel().getText();
         
-        sellStatement.setText("Selling a " + getCar + " " + getModel);
+        sellStatement.setText("Selling: " + getCar + " " + getModel);
         
       
     }//End of initialize
    
     
     @FXML
-    private void sellBtnAction(ActionEvent event) {
+    private void sellBtnAction(ActionEvent event) throws Exception {
         data = table2.getItems();
         String getCar = Singleton.getInstance().getCar().getText();
         String getModel = Singleton.getInstance().getModel().getText();
@@ -142,38 +142,63 @@ public class FXMLDocument2Controller implements Initializable {
                 valid.setText(null);
         } else {
             
-            data.add(new Sales(
-               getCar,
-               getModel,
-               price.getText(),
-               customer.getText(),
-               getVin));
             
-            price.clear(); //clearing the TextField of price
-            customer.clear(); //clearing the TextField of customer
+            if(isInt(price.getText())){
+                data.add(new Sales(
+                   getCar,
+                   getModel,
+                   price.getText(),
+                   customer.getText(),
+                   getVin));
+
+                sql.newRow(2);
+
+                price.clear(); //clearing the TextField of price
+                customer.clear(); //clearing the TextField of customer
+
+                sellStatement.setText(null);
+
+
+                TableView table = Singleton.getInstance().getTable();
+                int selectedIndex = table.getSelectionModel().getSelectedIndex();
+                if (selectedIndex >= 0) {
+                    System.out.println("deleting from inventory table");
+                    sql.deleteFromTable(1, selectedIndex);
+                    table.getItems().remove(selectedIndex);
+                }
+
+                //diplaying items on the table
+                table2.setItems(data);
+                valid.setText("Car Sold!");
             
-            sellStatement.setText(null);
-            
-            
-            TableView table = Singleton.getInstance().getTable();
-            int selectedIndex = table.getSelectionModel().getSelectedIndex();
-            if (selectedIndex >= 0) {
-                table.getItems().remove(selectedIndex);
+                priceLbl.setVisible(false);
+                price.setVisible(false);
+                customerLbl.setVisible(false);
+                customer.setVisible(false);
+                sellBtn.setVisible(false);
+                invalid.setText(null);
+            }else{
+                valid.setText(null);
+                invalid.setText("Car not sold, insert anomoly detected...");
             }
-            
-            //diplaying items on the table
-            table2.setItems(data);
-            valid.setText("Car Sold!");
-            
-            priceLbl.setVisible(false);
-            price.setVisible(false);
-            customerLbl.setVisible(false);
-            customer.setVisible(false);
-            sellBtn.setVisible(false);
-            invalid.setText(null);
         }
         
     }
+    
+    private boolean isInt(String string){
+        boolean isInteger = false;
+        
+        try{
+            int x = Integer.parseInt(string);
+            isInteger = true;
+        } catch(Exception e){
+            System.err.println("String is not an int...");
+        }
+        
+        return isInteger;
+    }
+        
+        
     @FXML
     private void goBackToCarDealership(ActionEvent event) {
         stage.setScene(scene1); //Goes back to the previous scene
@@ -193,6 +218,7 @@ public class FXMLDocument2Controller implements Initializable {
         milesField.setText(null);
         vinField.setText(null);
         sellStatement.setText(null);
+        vinField.setDisable(false);
         
         //Resetting all of the Buttons
         Button insertBtn = Singleton.getInstance().getInsert();
@@ -228,7 +254,7 @@ public class FXMLDocument2Controller implements Initializable {
     }
    
     @FXML
-    private void handleEnterKey(KeyEvent event) {
+    private void handleEnterKey(KeyEvent event) throws Exception {
         ActionEvent insertEvent = null;
         if(event.getCode() == KeyCode.ENTER){
            sellBtnAction(insertEvent);

@@ -45,7 +45,7 @@
             <Font name="System Italic" size="13.0" />
          </font>
       </Label>
-      <Label fx:id="sellStatement" alignment="CENTER" layoutX="88.0" layoutY="420.0" prefHeight="17.0" prefWidth="412.0" textFill="#0066ff">
+      <Label fx:id="sellStatement" alignment="CENTER" layoutX="85.0" layoutY="413.0" prefHeight="17.0" prefWidth="412.0" textFill="#0066ff">
          <font>
             <Font name="Cochin Italic" size="16.0" />
          </font>

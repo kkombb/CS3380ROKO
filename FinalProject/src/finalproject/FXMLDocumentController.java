@@ -189,7 +189,7 @@ public class FXMLDocumentController implements Initializable {
   
     
     @FXML
-    private void updateBtn(ActionEvent event) {
+    private void updateBtn(ActionEvent event) throws Exception {
         if(table.getSelectionModel().getSelectedItem() == null) { //setting buttons invisible once no content is in the table
             delete.setVisible(false);
             update.setVisible(false);
@@ -212,30 +212,39 @@ public class FXMLDocumentController implements Initializable {
                 valid.setText(null);
             } else {
                 
-                Inventory data = table.getSelectionModel().getSelectedItem();
-                
-                data.setCar(car.getText());
-                data.setModel(model.getText());
-                data.setYear(year.getText());
-                data.setMiles(miles.getText());
-                data.setVin(vin.getText());
-               
-                table.refresh(); //refrehes the full table
-                
-                valid.setText("Queue updated!");//lets user know that row has been updated
-                invalid.setText(null);
-                
-                //Clear all the contents in TextField after deleting 
-                car.clear();
-                model.clear();
-                year.clear();
-                miles.clear();
-                vin.clear(); 
-                
+                if(isInt(miles.getText()) && isInt(year.getText())){
+
+                    Inventory data = table.getSelectionModel().getSelectedItem();
+                    int selectedIndex = table.getSelectionModel().getSelectedIndex();
+
+                    data.setCar(car.getText());
+                    data.setModel(model.getText());
+                    data.setYear(year.getText());
+                    data.setMiles(miles.getText());
+                    data.setVin(vin.getText());
+
+                    sql.updateRow(1, selectedIndex);
+
+                    table.refresh(); //refrehes the full table
+
+                    valid.setText("Queue updated!");//lets user know that row has been updated
+                    invalid.setText(null);
+
+                    //Clear all the contents in TextField after deleting 
+                    car.clear();
+                    model.clear();
+                    year.clear();
+                    miles.clear();
+                    vin.clear(); 
+                } else {
+                    valid.setText(null);
+                    invalid.setText("Queue not inserted, Update anomoly detected");
+                }
                 //disappear buttons after updating
                 delete.setVisible(false);
                 update.setVisible(false);
                 cancel.setVisible(false);
+                vin.setDisable(false);
         
                 //Set table row selection mode to null
                 table.getSelectionModel().select(null);
@@ -268,35 +277,65 @@ public class FXMLDocumentController implements Initializable {
                 goToCarInventory(event);
                 setVisible();
                 
-        } else {
+        }
+        else {
             //add to sql list
-            data.add(new Inventory(
+            
+            //add the new row to sql IFF year and miles are integers
+            if(isInt(miles.getText()) && isInt(year.getText())){
+                
+                data.add(new Inventory(
                 car.getText(),
                 model.getText(),
                 year.getText(),
                 miles.getText(),
                 vin.getText()));
-            //add the new row to sql
-            //sql.newRow(1);
-            car.clear();
-            model.clear();
-            year.clear();
-            miles.clear();
-            vin.clear();
-            
-            //diplaying items on the table
-            table.setItems(data);
-           
-            
-            
-            valid.setText("Queue inserted!");
-            invalid.setText(null);
+                
+                System.out.println(isInt(data.get(data.size()-1).getYear()));
+                
+                if(sql.newRow(1) == false){
+                    data.remove(data.size() - 1);
+                    valid.setText(null);
+                    invalid.setText("Insert anomoly detected: Two cars with same VIN...");
+                } else {
+                   valid.setText("Queue inserted!");
+                   invalid.setText(null); 
+                }
+                
+
+                car.clear();
+                model.clear();
+                year.clear();
+                miles.clear();
+                vin.clear();
+
+                //diplaying items on the table
+                table.setItems(data);
+                
+            }else{
+                valid.setText(null);
+                invalid.setText("Queue not inserted, Insert anomoly detected");
+            }
+
         }
         
     }//End of insertBtn
+    
+    private boolean isInt(String string){
+        boolean isInteger = false;
+        
+        try{
+            int x = Integer.parseInt(string);
+            isInteger = true;
+        } catch(Exception e){
+            System.err.println("String is not an int...");
+        }
+        
+        return isInteger;
+    }
    
     @FXML
-    private void deleteBtn(ActionEvent event) throws InterruptedException {
+    private void deleteBtn(ActionEvent event) throws InterruptedException, Exception {
         if(table.getSelectionModel().getSelectedItem() == null) { //setting buttons invisible once no content is in the table
             delete.setVisible(false);
             update.setVisible(false);
@@ -305,6 +344,7 @@ public class FXMLDocumentController implements Initializable {
         table.setEditable(true);
         int selectedIndex = table.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0) {
+            sql.deleteFromTable(1, selectedIndex);
             table.getItems().remove(selectedIndex);
             valid.setText("Queue deleted!");
             
@@ -325,6 +365,7 @@ public class FXMLDocumentController implements Initializable {
             //Set table roll selection mode to null
             table.getSelectionModel().select(null);
             insert.setText("Insert"); //setting button back to Insert
+            vin.setDisable(false);
         } else {
             invalid.setText(null);
             valid.setText(null);
@@ -393,6 +434,7 @@ public class FXMLDocumentController implements Initializable {
             vin.setText(displayVin);
             
             insert.setText("Want to sell?"); //Giving the user the option to sell the car
+            vin.setDisable(true);
             
         } else {
             //disappear buttons after deleting
@@ -416,6 +458,7 @@ public class FXMLDocumentController implements Initializable {
         table.getSelectionModel().select(null);
         valid.setText(null);
         invalid.setText(null); 
+        vin.setDisable(false);
         //Clear all the contents in TextField after deleting 
         car.clear();
         model.clear();
