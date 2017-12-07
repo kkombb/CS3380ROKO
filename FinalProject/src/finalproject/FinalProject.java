@@ -11,20 +11,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 
 /**
  *
  * @author rolandoruche
  */
-
-/*
-    FOR FUTURE REFERENCE FOR CONVERSION TO FINAL VERSION
-    PERSON == InvetoryCar
-    CUSTOMER == SoldCar
-    Singleton == translator between scenes
-*/
 public class FinalProject extends Application {
     
     @Override
@@ -39,21 +31,6 @@ public class FinalProject extends Application {
         stage.show();
         
         FXMLDocumentController.start(stage); 
-       
-        /*
-         *final ObservableList<Person> data;
-         *
-         *final ObservableList<Customer> data2;
-         */
-        
-        
-        //for MySQLConnect testing
-        MySQLConnect sql = new MySQLConnect();
-        //sql.newRow(2);
-        //sql.updateRow(1);
-        //sql.deleteFromTable(1);
-        sql.showTable(1);
-        sql.showTable(2);
         
     }
 
@@ -65,4 +42,3 @@ public class FinalProject extends Application {
     }
     
 }//Testing comment
-

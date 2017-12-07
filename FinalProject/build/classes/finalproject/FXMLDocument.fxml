@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -8,30 +9,31 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="578.0" prefWidth="629.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="finalproject.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="580.0" prefWidth="630.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="finalproject.FXMLDocumentController">
    <children>
-      <TextField fx:id="car" layoutX="86.0" layoutY="309.0" onKeyPressed="#handleEnterKey" />
-      <TextField fx:id="model" layoutX="86.0" layoutY="372.0" onKeyPressed="#handleEnterKey" />
-      <TextField fx:id="year" layoutX="369.0" layoutY="309.0" onKeyPressed="#handleEnterKey" />
-      <TextField fx:id="miles" layoutX="369.0" layoutY="372.0" onKeyPressed="#handleEnterKey" />
-      <Label fx:id="carLbl" layoutX="23.0" layoutY="314.0" text="Car" />
-      <Label fx:id="modelLbl" layoutX="23.0" layoutY="377.0" text="Model" />
-      <Label fx:id="yearLbl" layoutX="303.0" layoutY="314.0" text="Year" />
-      <Label fx:id="milesLbl" layoutX="301.0" layoutY="377.0" text="Miles" />
-      <Button fx:id="insert" layoutX="416.0" layoutY="442.0" mnemonicParsing="false" onAction="#insertBtn" prefHeight="50.0" prefWidth="120.0" text="Insert" />
-      <Button fx:id="update" layoutX="117.0" layoutY="454.0" mnemonicParsing="false" onAction="#updateBtn" text="Update" />
-      <Button fx:id="delete" layoutX="21.0" layoutY="454.0" mnemonicParsing="false" onAction="#deleteBtn" text="Delete" />
-      <Label fx:id="valid" alignment="CENTER" layoutX="148.0" layoutY="526.0" prefHeight="17.0" prefWidth="305.0" textFill="#3dc410">
+      <TextField fx:id="car" layoutX="86.0" layoutY="285.0" onKeyPressed="#handleEnterKey" />
+      <TextField fx:id="model" layoutX="86.0" layoutY="332.0" onKeyPressed="#handleEnterKey" />
+      <TextField fx:id="year" layoutX="86.0" layoutY="377.0" onKeyPressed="#handleEnterKey" />
+      <TextField fx:id="miles" layoutX="370.0" layoutY="285.0" onKeyPressed="#handleEnterKey" />
+      <TextField fx:id="vin" layoutX="370.0" layoutY="332.0" onKeyPressed="#handleEnterKey" />
+      <Label fx:id="carLbl" layoutX="34.0" layoutY="290.0" text="Car" textFill="#0066ff" />
+      <Label fx:id="modelLbl" layoutX="26.0" layoutY="337.0" text="Model" textFill="#0066ff" />
+      <Label fx:id="yearLbl" layoutX="31.0" layoutY="382.0" text="Year" textFill="#0066ff" />
+      <Label fx:id="milesLbl" layoutX="302.0" layoutY="290.0" text="Miles" textFill="#0066ff" />
+      <Button fx:id="insert" layoutX="394.0" layoutY="391.0" mnemonicParsing="false" onAction="#insertBtn" prefHeight="50.0" prefWidth="120.0" text="Insert" textFill="#0066ff" />
+      <Button fx:id="update" layoutX="117.0" layoutY="454.0" mnemonicParsing="false" onAction="#updateBtn" text="Update" textFill="#0066ff" />
+      <Button fx:id="delete" layoutX="16.0" layoutY="454.0" mnemonicParsing="false" onAction="#deleteBtn" text="Delete" textFill="#0066ff" />
+      <Label fx:id="valid" alignment="CENTER" layoutX="148.0" layoutY="529.0" prefHeight="17.0" prefWidth="305.0" textFill="#3dc410">
          <font>
             <Font name="System Italic" size="13.0" />
          </font>
       </Label>
-      <Text layoutX="2.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ROKO Dealership" textAlignment="CENTER" wrappingWidth="623.0">
+      <Text fill="#ff7100" layoutX="2.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ROKO Dealership" textAlignment="CENTER" wrappingWidth="623.0">
          <font>
-            <Font size="24.0" />
+            <Font name="SansSerif Regular" size="24.0" />
          </font>
       </Text>
-      <MenuButton layoutX="-1.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="87.0" text="Settings">
+      <MenuButton layoutX="-1.0" layoutY="-1.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="87.0" text="Settings" textFill="#0066ff">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#goToCarInventory" text="Cars Sold" />
           <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="About" />
@@ -44,12 +46,14 @@
       </Label>
       <TableView fx:id="table" layoutX="5.0" layoutY="71.0" onMouseClicked="#handleClicked" prefHeight="200.0" prefWidth="620.0">
         <columns>
-          <TableColumn fx:id="carClmn" prefWidth="133.0" text="Car" />
-          <TableColumn fx:id="modelClmn" prefWidth="168.0" text="Model" />
-            <TableColumn fx:id="yearClmn" prefWidth="160.0" text="Year" />
-            <TableColumn fx:id="milesClmn" prefWidth="158.0" text="Miles" />
+          <TableColumn fx:id="carClmn" prefWidth="111.0" text="Car" />
+          <TableColumn fx:id="modelClmn" prefWidth="127.0" text="Model" />
+            <TableColumn fx:id="yearClmn" prefWidth="124.0" text="Year" />
+            <TableColumn fx:id="milesClmn" prefWidth="130.0" text="Miles" />
+            <TableColumn fx:id="vinClmn" prefWidth="127.0" text="VIN" />
         </columns>
       </TableView>
-      <Button fx:id="cancel" layoutX="223.0" layoutY="454.0" mnemonicParsing="false" onAction="#cancelBtn" text="Cancel" />
+      <Button fx:id="cancel" layoutX="223.0" layoutY="454.0" mnemonicParsing="false" onAction="#cancelBtn" text="Cancel" textFill="#0066ff" />
+      <Label fx:id="vinLbl" layoutX="308.0" layoutY="337.0" text="VIN" textFill="#0066ff" />
    </children>
 </AnchorPane>

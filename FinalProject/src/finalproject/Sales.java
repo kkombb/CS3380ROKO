@@ -19,7 +19,7 @@ import javafx.beans.property.SimpleStringProperty;
         private final SimpleStringProperty model = new SimpleStringProperty("");
         private final SimpleStringProperty price = new SimpleStringProperty("");
         private final SimpleStringProperty customer = new SimpleStringProperty("");
-        private final SimpleStringProperty date = new SimpleStringProperty("");
+        private final SimpleStringProperty vin = new SimpleStringProperty("");
    
         
     
@@ -27,12 +27,12 @@ import javafx.beans.property.SimpleStringProperty;
             this("", "", "", "","");
         }
  
-        public Sales(String car, String model, String price, String customer, String date) {
+        public Sales(String car, String model, String price, String customer, String vin) {
             setCar(car);
             setModel(model);
             setPrice(price);
             setCustomer(customer);
-            setDate(date);
+            setVin(vin);
         }
    
      
@@ -68,14 +68,13 @@ import javafx.beans.property.SimpleStringProperty;
             this.customer.set(customerVar);
         }
         
-        public String getDate() {
-            return date.get();
+        public String getVin() {
+            return vin.get();
         }
         
-        public void setDate(String dateVar) {
-            this.date.set(dateVar);
+        public void setVin(String vinVar) {
+            this.vin.set(vinVar);
         }
         
     }//End of Final Customer class
-    //Testing #3
-//Hello from PC
+    
