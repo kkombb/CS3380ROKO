@@ -16,6 +16,7 @@ DESCRIPTION: This Java program keeps track of
   of the project (located at FinalProject/dist/FinalProject.jar).
   
 TABLE DEFINITIONS:
+
     inventory:
       vin varchar(255) PRIMARY KEY
       car varchar(255)
