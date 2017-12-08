@@ -31,7 +31,8 @@ TABLE DEFINITIONS:
       price int
       name varchar(255)
 
-ERD: Provided in the repository (FinalProject3380.srd)
+ERD: Provided in the repository (FinalProject3380.sdr)
+      Link to ERD: https://cloud.smartdraw.com/editor.aspx?templateId=2f3b7c28-0285-4534-8ec7-669613516600#depoId=1JSqhc7-IcMz6sR3ADE5UigiZ1dIGr9sn&credID=45802
 
 CRUD EXPLANATION: The program does all of the
   query calls in the MySQLConnect.java file. The
