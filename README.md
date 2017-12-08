@@ -31,7 +31,7 @@ TABLE DEFINITIONS:
       price int
       name varchar(255)
 
-ERD:
+ERD: Provided in the repository (FinalProject3380.srd)
 
 CRUD EXPLANATION: The program does all of the
   query calls in the MySQLConnect.java file. The
