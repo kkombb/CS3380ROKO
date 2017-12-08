@@ -479,8 +479,8 @@ public class FXMLDocumentController implements Initializable {
         alert.setHeaderText("Car Storage File");
         alert.setContentText("This application was developed by Roland Oruche and Kirtis Orendorff and for CS3380 at the University of Missouri.");
         
-        TextArea textArea = new TextArea("This is for our final project. ");
-        textArea.appendText("And yes we kick ass!");
+        TextArea textArea = new TextArea("This is for our final project. This application keeps track of the inventory in a mock car dealership.");
+        textArea.appendText("Project by Kirtis O. and Roland O.");
         textArea.setEditable(false);
         textArea.setWrapText(true);
         textArea.setMaxWidth(Double.MAX_VALUE);

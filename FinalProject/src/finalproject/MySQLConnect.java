@@ -268,7 +268,7 @@ public class MySQLConnect {
             conn = DriverManager.getConnection("jdbc:mysql://52.14.177.55:3306/final_project", "user", "pass");
         }
         catch(SQLException ex){
-            System.out.println(ex);
+            System.out.println("Cannot Connect:\n" + ex);
         } 
         
         Statement stmt = null;
